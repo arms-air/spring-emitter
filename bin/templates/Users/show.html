@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main"
+>
+<head>
+	<title>Users Details</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<!-- Users show.html inserted into main.html -->
+		<div class="row">
+		    <aside class="col-xs-4">
+		        <section>
+		            <h1>
+		                <img src="${user.getGravatarURL()}" alt="${user.name}" class="gravatar"/>
+		                ${user.name}
+		            </h1>
+		        </section>
+		        <section>
+		            <div th:include="shared/_stats :: stats">stats</div>
+		        </section>
+		    </aside>
+		    <div class="col-xs-8">
+		    	 #{if controllers.Security.isConnected()}
+		    	 	<div th:include="Users/_follow_form :: follow_form">follow_form</div>
+		        #{/if}
+		        #{ if user.microposts.asList().size() != 0 }
+		            <ol><h3>Microposts (${user.microposts.asList().size()})</h3></ol>
+		            <ol class="microposts" th:include="shared/_micropost :: micropost">micropost</ol>
+		        #{/if}
+		    </div>
+		    
+		</div>
+		<a class="btn btn-primary btn-small" href="@{StaticPages.home()}">
+		    Back to Home
+		</a>
+		<!-- Users show.html inserted into main.html End -->
+	</div>
+</body>
+</html>

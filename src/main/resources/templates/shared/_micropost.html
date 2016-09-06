@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title >micropost</title>
+</head>
+<body>
+	<div th:fragment="micropost" th:remove="tag">
+		<!-- shared _micropost.html included into show.html -->
+				#{list items:microposts, as:'micropost' }
+				    <li>
+				        <span class="content">${micropost.content}</span>
+				        <span class="timestamp">
+				            Posted ${new Date(micropost.create_at.getTime()).since(true)}
+				        </span>
+				        #{if controllers.Security.check_current_user(user.id)}
+				            <a href="@{Microposts.delete(micropost.id)}" 
+				onclick="return confirm('Are you sure you want to delete this item?');">delete</a>
+				        #{/if}
+				        
+				    </li>
+				#{/list}
+	
+		        <script type="text/javascript">
+					$( document ).ready(function() {
+					$('.pagination .disabled a, .pagination .active a').on('click', function(e) {
+						e.preventDefault();
+						});
+					});
+				</script>
+				<nav class="text-center">
+					<ul class="pagination">
+						<li #{if hasPrevious !=true}class= "disabled"#{/if} ><a href="@{Users.show(user.id, currentPage-1)}">Previous Page</a></li>
+						#{if allPage > 0} #{list items:1..allPage, as:'page' }
+							<li #{if currentPage == page}class="active"#{/if}><a href="@{Users.show(user.id, page)}">${page}</a></li> #{/list} 
+						#{/if}
+						<li #{if hasNext !=true}class= "disabled"#{/if} ><a href="@{Users.show(user.id, currentPage+1)}">Next Page</a></li>
+					</ul>
+				</nav>
+		<!-- shared _micropost.html included into show.html End -->
+    </div>
+</body>
+</html>

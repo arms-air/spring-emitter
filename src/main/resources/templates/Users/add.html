@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main"
+>
+<head>
+	<title>Create new user</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+	<!-- Users add.html inserted into main.html -->
+		<h1>Sign up</h1>
+		<div class="row">
+		    <div class="col-md-6 col-md-offset-3">
+		#{ifErrors}
+			<div id="error_explanation">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+				    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				    The form contains ${errors.size() - 1} errors.
+				</div>
+				<ul>
+				    #{errors}
+				        #{if error.key != 'user'}
+				            <li>${error}</li>
+				        #{/if}
+				    #{/errors}
+				</ul>
+			</div>
+		#{/ifErrors}
+		            #{form @Users.create()}
+		            	<label>name</label>
+		            	<input type="text" class="form-control" id="name" name="user.name" value="${flash['user.name']}" /><br>
+		
+		            	<label>email</label>
+		            	<input type="text" class="form-control" id="email" name="user.email" value="${flash['user.email']}" /><br>
+		
+		            	<label>password</label>
+		            	<input type="password" class="form-control" id="passwd" name="user.passwd" /><br>
+		            
+		            	<div class="text-center">
+			      <input class="btn btn-primary btn-large" type="submit" name="submit" value="Create my account" />
+			</div>
+		            	<br/><br/>
+		           #{/form}
+		    </div>
+		</div>
+	<!-- Users add.html inserted into main.html End -->
+	</div>
+</body>
+</html>

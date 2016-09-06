@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>feed</title>
+</head>
+<body>
+	<div th:fragment="feed" th:remove="tag">
+		<!-- shared _feed.html included into home.html -->
+		<ol class="microposts">
+		    #{list items:microposts, as:'micropost' }
+				#{set user: users.find_by_id(micropost.user_id) /}
+				<section><div th:include="shared/_feed_item :: feed_item">feed_item</div></section>
+		    #{/list}
+		</ol>
+		
+		<nav class="text-center">
+		<ul class="pagination">
+		<li #{if hasPrevious != true}class = "disabled"#{/if} ><a href="/page/${(currentPage-1)}">Previous Page</a></li>
+		
+		
+		#{if allPage > 0} 
+		#{list items:1..allPage, as:'page' }
+		<li><a href="/page/${page}">${page}</a></li> 
+		#{/list} 
+		#{/if}
+		<li #{if hasNext != true}class = "disabled"#{/if} ><a href="/page/${(currentPage+1)}">Next Page</a></li> 
+		</ul>
+		</nav>
+		<!-- shared _feed.html included into home.html End -->
+    </div>
+</body>
+</html>

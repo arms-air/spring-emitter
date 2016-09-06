@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main"
+>
+<head>
+	<title>About</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+	<!-- StaticPages about.html inserted into main.html -->
+		<h1>About</h1>
+		<p>
+	    	<a href="http://arms-asia.com/en/about-us/company-profile/">ARMS Thailand</a>
+	    	is a company to create fascinating and fantastic applications specialized for web contents
+	    	let's try with <a href="http://arms-asia.com/en/about-us/company-profile/">us</a>.
+		</p>
+	<!-- StaticPages about.html inserted into main.html End -->
+	</div>
+</body>
+</html>

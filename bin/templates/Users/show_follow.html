@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main"
+>
+<head>
+	<title>show follow</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<!-- Users show_follow.html inserted into main.html -->
+		<div class="row">
+		    <aside class="col-xs-4">
+		        <section>
+		            <h1>
+		                <img src="${user.getGravatarURL()}" alt="${user.name}" class="gravatar"/>
+		                <h1>${user.name}</h1>
+		                <span>
+		                    <a href="@{Users.show(user.id)}">view my profile</a>
+		                </span>
+		                <span><b>Microposts:</b> ${user.microposts.asList().size()}</span>
+		            </h1>
+		        </section>
+		        <section>
+		            <div th:include="shared/_stats :: stats">stats</div>
+		            <div class="user_avatars">
+		                #{list items:related_users, as:'related_user' }
+		                    <a href="@{Users.show(related_user.id)}">
+		<img src="${related_user.getGravatarURL()}" width="30" height="30" alt="${related_user.name}" class="gravatar"/>
+		                    </a>
+		                #{/list}
+		            </div>
+		        </section>
+		    </aside>
+		    <div class="col-xs-8">
+		        <h3>${title}</h3>
+		        <ul class="users">
+		            #{list items:related_users, as:'related_user' }
+		            <li>
+		                <a href="@{Users.show(related_user.id)}">
+		                    <img src="${related_user.getGravatarURL()}" width="52" height="52" alt="${related_user.name}" class="gravatar"/>
+		                </a>
+		                <a href="@{Users.show(related_user.id)}">${related_user.name}</a>
+		            </li>
+		            #{/list}
+		        </ul>
+		    </div>
+		</div>
+		<a class="btn btn-primary btn-small" href="@{StaticPages.home()}">
+		    Back to Home
+		</a>
+		<!-- Users show_follow.html inserted into main.html End -->
+	</div>
+</body>
+</html>

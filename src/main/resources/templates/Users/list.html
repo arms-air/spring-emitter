@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main"
+>
+<head>
+	<title>Users' list</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+	<!-- Users list.html inserted into main.html -->
+		<h1>All users</h1>
+		<div th:include="Users/_paging :: paging">paging</div>
+			#{ifnot users}
+			<p>No User</p>
+			{/ifnot}
+			#{else}
+				<ul class="users">
+			    #{if users == null}
+			    No Data
+			    #{/if}
+			    #{else}
+			        #{list items:users, as:'user' }
+		            <li>
+		                <img src="${user.getGravatarURL()}" width="52" height="52"  alt="${user.name}" class="gravatar"/>
+		                #{a @Users.show(user.id),id:"show_"+user.id+""}${user.name}#{/a}
+		                | #{a @Users.edit(user.id),id:"edit_"+user.id+""}Edit#{/a}
+		                | <a href="@{Users.delete(user.id)}"><span class="glyphicon glyphicon-remove red" aria-hidden="true"></span></a>
+		            </li>
+		        	{/list}
+	    		#{/else}
+				</ul>
+			#{/else}
+
+		<div th:include="Users/_paging :: paging">paging</div>
+	<!-- Users list.html inserted into main.html End -->
+	</div>
+</body>
+</html>

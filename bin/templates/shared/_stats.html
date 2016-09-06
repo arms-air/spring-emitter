@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title >stats</title>
+</head>
+<body>
+	<div th:fragment="stats" th:remove="tag">
+		<!-- shared _stats.html included into home.html or show_follow.html or show.html -->
+		#{if user == null}
+		    #{set user: current_user /}
+		#{/if}
+		
+		<div class="stats">
+		    <a href="@{Users.following(user.id)}">
+		        <strong id="following" class="stat">
+		            ${user.get_followings().size()}
+		        </strong>
+		        following
+		    </a>
+		    <a href="@{Users.followers(user.id)}">
+		        <strong id="followers" class="stat">
+		            ${user.get_followers().size()}
+		        </strong>
+		        followers
+		    </a>
+		</div>
+		<!-- shared _stats.html included into home.html or show_follow.html or show.html End -->
+    </div>
+</body>
+</html>

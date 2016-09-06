@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>feed_item</title>
+</head>
+<body>
+	<div th:fragment="feed_item" th:remove="tag">
+		<!-- shared _feed_item.html included into _feed.html -->
+		<li id="<%= feed_item.id %>">
+		    <img src="${user.getGravatarURL()}" width="52" height="52" alt="${user.name}" class="gravatar"/>
+		    <span class="user">
+		        <a href="@{Users.show(user.id)}">${user.name}</a>
+		    </span>
+		    <span class="content">${micropost.content}</span>
+		    <span class="timestamp">
+		            Posted ${new Date(micropost.create_at.getTime()).since(true)}
+		    </span>
+		    #{if controllers.Security.check_current_user(current_user.id) && current_user.id == micropost.user_id}
+		    <a href="@{Microposts.delete(micropost.id)}" onclick="return confirm('Are you sure?')">delete</a>
+		    #{/if}
+		</li>
+		<!-- shared _feed_item.html included into _feed.html End -->
+    </div>
+</body>
+</html>
