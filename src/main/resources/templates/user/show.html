@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main"
->
+      layout:decorator="layout/main">
 <head>
 	<title>Users Details</title>
 </head>
@@ -14,8 +13,8 @@
 		    <aside class="col-xs-4">
 		        <section>
 		            <h1>
-		                <img src="${user.getGravatarURL()}" alt="${user.name}" class="gravatar"/>
-		                ${user.name}
+		                <img src="${user.getGravatarURL()}" th:alt="${user.name}" class="gravatar"/>
+		                <span th:text="${user.name}">AAA</span>
 		            </h1>
 		        </section>
 		        <section>
@@ -23,17 +22,18 @@
 		        </section>
 		    </aside>
 		    <div class="col-xs-8">
-		    	 #{if controllers.Security.isConnected()}
-		    	 	<div th:include="Users/_follow_form :: follow_form">follow_form</div>
-		        #{/if}
-		        #{ if user.microposts.asList().size() != 0 }
-		            <ol><h3>Microposts (${user.microposts.asList().size()})</h3></ol>
+				<div th:if="${isLogin}" th:include="user/_follow_form :: follow_form">follow_form</div>
+
+				<span th:if="${microposts.size() > 0}">
+					<ol>
+						<h3 th:text="'Microposts (' + ${microposts.size()} + ')'">CCC</h3>
+					</ol>
 		            <ol class="microposts" th:include="shared/_micropost :: micropost">micropost</ol>
-		        #{/if}
+				</span>
 		    </div>
 		    
 		</div>
-		<a class="btn btn-primary btn-small" href="@{StaticPages.home()}">
+		<a class="btn btn-primary btn-small" href="/">
 		    Back to Home
 		</a>
 		<!-- Users show.html inserted into main.html End -->
