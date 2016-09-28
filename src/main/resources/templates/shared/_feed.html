@@ -9,25 +9,38 @@
 	<div th:fragment="feed" th:remove="tag">
 		<!-- shared _feed.html included into home.html -->
 		<ol class="microposts">
-		    #{list items:microposts, as:'micropost' }
-				#{set user: users.find_by_id(micropost.user_id) /}
-				<section><div th:include="shared/_feed_item :: feed_item">feed_item</div></section>
-		    #{/list}
+			<span th:each="micropost, stat : ${microposts}">
+				<section><div th:include="shared/_feed_item :: feed_item(${micropost})">feed_item</div></section>
+			</span>
 		</ol>
-		
-		<nav class="text-center">
-		<ul class="pagination">
-		<li #{if hasPrevious != true}class = "disabled"#{/if} ><a href="/page/${(currentPage-1)}">Previous Page</a></li>
-		
-		
-		#{if allPage > 0} 
-		#{list items:1..allPage, as:'page' }
-		<li><a href="/page/${page}">${page}</a></li> 
-		#{/list} 
-		#{/if}
-		<li #{if hasNext != true}class = "disabled"#{/if} ><a href="/page/${(currentPage+1)}">Next Page</a></li> 
-		</ul>
-		</nav>
+
+		<!-- Pagination Bar -->
+		<div th:fragment='paginationbar'>
+			<div>
+				<ul class='pagination pagination-centered'>
+					<li th:class="${page.firstPage}?'disabled':''">
+						<span th:if='${page.firstPage}'>← First</span>
+						<a th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'>← First</a>
+					</li>
+					<li th:class="${page.hasPreviousPage}? '' : 'disabled'">
+						<span th:if='${not page.hasPreviousPage}'>«</span>
+						<a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}' title='Go to previous page'>«</a>
+					</li>
+					<li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
+						<span th:if='${item.current}' th:text='${item.number}'>1</span>
+						<a th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span th:text='${item.number}'>1</span></a>
+					</li>
+					<li th:class="${page.hasNextPage}? '' : 'disabled'">
+						<span th:if='${not page.hasNextPage}'>»</span>
+						<a th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}' title='Go to next page'>»</a>
+					</li>
+					<li th:class="${page.lastPage}? 'disabled' : ''">
+						<span th:if='${page.lastPage}'>Last →</span>
+						<a th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last →</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<!-- shared _feed.html included into home.html End -->
     </div>
 </body>

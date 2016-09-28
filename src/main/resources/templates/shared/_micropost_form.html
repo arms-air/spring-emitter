@@ -8,37 +8,20 @@
 <body>
 	<div th:fragment="micropost_form" th:remove="tag">
 		<!-- shared _micropost_form.html included into home.html -->
-		#{if flash.success}
-		<div class="alert alert-success alert-dismissible" role="alert">
-    	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    	${flash.success}
+		<div th:if="${not #strings.isEmpty(message)}" class="alert alert-success alert-dismissible" role="alert" th:text="${message}">
+    		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		</div>
-		#{/if}
-		#{ifErrors}
-		<div id="error_explanation">
-    		<div class="alert alert-danger alert-dismissible" role="alert">
 
-        	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        	contains ${errors.size() - 1} errors.
-    		</div>
-    		<ul>
-	        #{errors}
-	            #{if error.key != 'micropost'}
-	                <li>${error}</li>
-	            #{/if}
-	        #{/errors}
-   			</ul>
-		</div>
-		#{/ifErrors}
-		#{form @Microposts.create() }
-    	<div class="field">
-        	<textarea class="form-control" id="content" name="micropost.content" placeholder="Compose new micropost..."></textarea>
-    	</div>
+		<form th:action="@{/micropost/create}" th:object="${micropostCreateForm}" method="post" role="form" name="form1">
+			<div class="field">
+				<textarea class="form-control" th:field="*{content}" placeholder="Compose new micropost..."></textarea>
+			</div>
 
-    	<input type="hidden" id="user_id" name="micropost.user_id" value="${current_user.id}" />
-    	<input class="btn btn-primary btn-large" type="submit" name="submit" value="Post" />
-    	<br/><br/>
-		#{/form}
+			<input class="btn btn-primary btn-large" type="submit" name="submit" value="Post" />
+		</form>
+
+    	<br>
+		<br>
 		<!-- shared _micropost_form.html included into home.html End -->
     </div>
 </body>

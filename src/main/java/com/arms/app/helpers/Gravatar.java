@@ -1,11 +1,11 @@
 package com.arms.app.helpers;
 
-import java.util.*;
-import java.io.*;
-import java.security.*;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Gravatar {
-	
+
     public static String hex(byte[] array) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < array.length; ++i) {
@@ -14,7 +14,7 @@ public class Gravatar {
         }
         return sb.toString();
     }
-    
+
     public static String md5Hex (String message) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -25,4 +25,3 @@ public class Gravatar {
         return null;
     }
 }
-
