@@ -46,6 +46,7 @@ public class UserController {
         modelAndView.addObject("followers", userService.getFollowerListByUserId(userId));
         User user = userService.findOne(userId);
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userImage", userService.getGravatarUrl(user.getEmail()));
         User loginUser = userService.findOne(principal);
         // modelAndView.addObject("loginUser", loginUser);
         if(user.getId() != loginUser.getId()) {
@@ -69,8 +70,8 @@ public class UserController {
      */
     @RequestMapping("/user/list")
     public ModelAndView list(ModelAndView modelAndView, Principal principal, Pageable pageable) {
-        Page<User> userPage = userService.findAllUser(pageable);
-        PageWrapper<User> page = new PageWrapper<>(userPage, "/user/list");
+        Page<UserListForm> userPage = userService.findAllUser(pageable);
+        PageWrapper<UserListForm> page = new PageWrapper<>(userPage, "/user/list");
         modelAndView.addObject("users", page.getContent());
         modelAndView.addObject("page", page);
         modelAndView.addObject("userId", userService.getUserId(principal));
@@ -142,8 +143,8 @@ public class UserController {
         // modelAndView.addObject("followings", userService.getFollowingListByUserInfo(user.getId()));
         modelAndView.addObject("followers", userService.getFollowerListByUserId(user.getId()));
 
-        Page<User> userPage = userService.findAllFollowing(user.getId(), pageable);
-        PageWrapper<User> page = new PageWrapper<>(userPage, "/user/following");
+        Page<UserFollowingForm> userPage = userService.findAllFollowing(user.getId(), pageable);
+        PageWrapper<UserFollowingForm> page = new PageWrapper<>(userPage, "/user/following");
         modelAndView.addObject("followings", page.getContent());
         modelAndView.addObject("page", page);
         modelAndView.setViewName("/user/following");
@@ -164,8 +165,8 @@ public class UserController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("followings", userService.getFollowingListByUserId(user.getId()));
 
-        Page<User> userPage = userService.findAllFollower(user.getId(), pageable);
-        PageWrapper<User> page = new PageWrapper<>(userPage, "/user/followers");
+        Page<UserFollowerForm> userPage = userService.findAllFollower(user.getId(), pageable);
+        PageWrapper<UserFollowerForm> page = new PageWrapper<>(userPage, "/user/followers");
         modelAndView.addObject("followers", page.getContent());
         modelAndView.addObject("page", page);
         modelAndView.setViewName("/user/followers");

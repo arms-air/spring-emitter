@@ -35,7 +35,7 @@
 						<input class="btn btn-primary btn-large" type="submit" name="submit" value="Update my account" /><br/><br/>
 					</div>
 				</form>
-				<img src="${user.getGravatarURL()}" th:alt="${user.name}" class="gravatar"/>
+				<img th:src="${loginUserImage}" th:alt="${user.name}" class="gravatar"/>
 				<a href="http://gravatar.com/emails">change</a>
 		    </div>
 		</div>		

@@ -1,14 +1,13 @@
 package com.arms.domain.service;
 
-import com.arms.app.user.UserAddForm;
-import com.arms.app.user.UserEditForm;
-import com.arms.app.user.UserFollowForm;
+import com.arms.app.user.*;
 import com.arms.domain.component.PasswordEncoder;
 import com.arms.domain.entity.Micropost;
 import com.arms.domain.entity.RelationShip;
 import com.arms.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,17 @@ public class UserService extends AppService {
      *
      * @return
      */
-    public Page<User> findAllUser(Pageable pageable){
-        return userRepository.findAll(pageable);
+    public Page<UserListForm> findAllUser(Pageable pageable){
+        Page<User> userPage = userRepository.findAll(pageable);
+        List<UserListForm> userListFormList = new ArrayList<>();
+        for(User user : userPage) {
+            UserListForm userListForm = new UserListForm();
+            userListForm.setId(user.getId());
+            userListForm.setName(user.getName());
+            userListForm.setImage(getGravatarUrl(user.getEmail()));
+            userListFormList.add(userListForm);
+        }
+        return new PageImpl<>(userListFormList);
     }
 
     /**
@@ -88,13 +96,22 @@ public class UserService extends AppService {
      * @param pageable
      * @return
      */
-    public Page<User> findAllFollowing(int userId, Pageable pageable) {
+    public Page<UserFollowingForm> findAllFollowing(int userId, Pageable pageable) {
         List<RelationShip> relationShipList = relationShipRepository.findAllByFollowerId(userId);
         List<Integer> emitterIdList = new ArrayList<>();
         for(RelationShip relationShip : relationShipList) {
             emitterIdList.add(relationShip.getUserId());
         }
-        return userRepository.findByIdInOrderByUpdatedDesc(emitterIdList, pageable);
+        Page<User> userPage = userRepository.findByIdInOrderByUpdatedDesc(emitterIdList, pageable);
+        List<UserFollowingForm> userFollowingFormList = new ArrayList<>();
+        for(User user : userPage) {
+            UserFollowingForm userFollowingForm = new UserFollowingForm();
+            userFollowingForm.setId(user.getId());
+            userFollowingForm.setName(user.getName());
+            userFollowingForm.setImage(getGravatarUrl(user.getEmail()));
+            userFollowingFormList.add(userFollowingForm);
+        }
+        return new PageImpl<>(userFollowingFormList);
     }
 
     /**
@@ -103,13 +120,22 @@ public class UserService extends AppService {
      * @param pageable
      * @return
      */
-    public Page<User> findAllFollower(int userId, Pageable pageable) {
+    public Page<UserFollowerForm> findAllFollower(int userId, Pageable pageable) {
         List<RelationShip> relationShipList = relationShipRepository.findAllByUserId(userId);
         List<Integer> followerIdList = new ArrayList<>();
         for(RelationShip relationShip : relationShipList) {
             followerIdList.add(relationShip.getFollowerId());
         }
-        return userRepository.findByIdInOrderByUpdatedDesc(followerIdList, pageable);
+        Page<User> userPage = userRepository.findByIdInOrderByUpdatedDesc(followerIdList, pageable);
+        List<UserFollowerForm> userFollowerFormList = new ArrayList<>();
+        for(User user : userPage) {
+            UserFollowerForm followerForm = new UserFollowerForm();
+            followerForm.setId(user.getId());
+            followerForm.setName(user.getName());
+            followerForm.setImage(getGravatarUrl(user.getEmail()));
+            userFollowerFormList.add(followerForm);
+        }
+        return new PageImpl<>(userFollowerFormList);
     }
 
     /**

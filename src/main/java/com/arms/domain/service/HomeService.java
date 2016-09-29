@@ -1,5 +1,6 @@
 package com.arms.domain.service;
 
+import com.arms.app.home.HomeListForm;
 import com.arms.domain.entity.Micropost;
 import com.arms.domain.entity.RelationShip;
 import com.arms.domain.repository.MicropostRepository;
@@ -7,6 +8,7 @@ import com.arms.domain.repository.RelationShipRepository;
 import com.arms.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +65,19 @@ public class HomeService extends AppService {
      * @param pageable
      * @return
      */
-    public Page<Micropost> findAllByIdList(List<Integer> micropostIdList, Pageable pageable) {
-        return micropostRepository.findByIdInOrderByUpdatedDesc(micropostIdList, pageable);
+    public Page<HomeListForm> findAllByIdList(List<Integer> micropostIdList, Pageable pageable) {
+        Page<Micropost> micropostPage = micropostRepository.findByIdInOrderByUpdatedDesc(micropostIdList, pageable);
+        List<HomeListForm> homeListFormList = new ArrayList<>();
+        for (Micropost micropost : micropostPage) {
+            HomeListForm homeListForm = new HomeListForm();
+            homeListForm.setUserId(micropost.getUserId());
+            homeListForm.setUserName(micropost.getUser().getName());
+            homeListForm.setMicropostId(micropost.getId());
+            homeListForm.setMicropostContent(micropost.getContent());
+            homeListForm.setUpdated(micropost.getUpdated());
+            homeListForm.setUserImage(getGravatarUrl(micropost.getUser().getEmail()));
+            homeListFormList.add(homeListForm);
+        }
+        return new PageImpl<>(homeListFormList);
     }
 }

@@ -9,7 +9,7 @@
 	<div th:fragment="user_info" th:remove="tag">
 		<!-- shared _user_info.html included into home.html -->
 		<a th:href="@{/user/show/} + ${userId}">
-			<img src="${current_user.getGravatarURL()}" th:alt="${userInfo.username}" class="gravatar"/>
+			<img th:src="${loginUserImage}" th:alt="${userInfo.username}" class="gravatar"/>
 		</a>
 		<h1 th:text="${userInfo.username}">AAA</h1>
 		<span>

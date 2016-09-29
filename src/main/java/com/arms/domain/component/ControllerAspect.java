@@ -1,5 +1,6 @@
 package com.arms.domain.component;
 
+import com.arms.domain.entity.User;
 import com.arms.domain.service.AppService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -46,7 +47,9 @@ public class ControllerAspect {
             modelAndView.addObject("isLogin", true);
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             modelAndView.addObject("userInfo", userDetails);
-            modelAndView.addObject("loginUser", appService.findOne(principal));
+            User user = appService.findOne(principal);
+            modelAndView.addObject("loginUser", user);
+            modelAndView.addObject("loginUserImage", appService.getGravatarUrl(user.getEmail()));
         } else {
             modelAndView.addObject("isLogin", false);
         }

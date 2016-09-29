@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Gravatar {
 
-    public static String hex(byte[] array) {
+    public String hex(byte[] array) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < array.length; ++i) {
             sb.append(Integer.toHexString((array[i]
@@ -15,7 +15,7 @@ public class Gravatar {
         return sb.toString();
     }
 
-    public static String md5Hex (String message) {
+    public String md5Hex (String message) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             return hex (md.digest(message.getBytes("CP1252")));

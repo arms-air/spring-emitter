@@ -2,7 +2,6 @@ package com.arms.app.home;
 
 import com.arms.domain.component.ControllerAspect;
 import com.arms.domain.component.PageWrapper;
-import com.arms.domain.entity.Micropost;
 import com.arms.domain.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,8 +48,8 @@ public class HomeController {
             List<Integer> micropostIdList = homeService.getMyMicropost(userId);
             homeService.setFollowingMicropost(userId, micropostIdList);
 
-            Page<Micropost> micropostPage = homeService.findAllByIdList(micropostIdList, pageable);
-            PageWrapper<Micropost> page = new PageWrapper<>(micropostPage, "/");
+            Page<HomeListForm> micropostPage = homeService.findAllByIdList(micropostIdList, pageable);
+            PageWrapper<HomeListForm> page = new PageWrapper<>(micropostPage, "/");
             modelAndView.addObject("microposts", page.getContent());
             modelAndView.addObject("page", page);
         }
