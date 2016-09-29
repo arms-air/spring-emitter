@@ -3,26 +3,22 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <head>
-    <title >user_info</title>
+    <title>User Info</title>
 </head>
 <body>
 	<div th:fragment="user_info" th:remove="tag">
-	<!-- shared _user_info.html included into home.html -->
-	<a href="@{Users.show(current_user.id)}">
-    <img src="${current_user.getGravatarURL()}" alt="${current_user.name}" class="gravatar"/>
-	</a>
-	<h1>
-    	${current_user.name}
-	</h1>
-	<span>
-    	<a href="@{Users.show(current_user.id)}">
-        view my profile
-    	</a>
-	</span>
-	<span>
-    	${current_user.microposts.asList().size()} microposts
-	</span>
-	<!-- shared _user_info.html included into home.html End -->
+		<!-- shared _user_info.html included into home.html -->
+		<a th:href="@{/user/show/} + ${userId}">
+			<img src="${current_user.getGravatarURL()}" th:alt="${userInfo.username}" class="gravatar"/>
+		</a>
+		<h1 th:text="${userInfo.username}">AAA</h1>
+		<span>
+			<a th:href="@{/user/show/} + ${userId}">view my profile</a>
+		</span>
+		<span th:text="${microposts.size()} + ' microposts'">
+			AAA
+		</span>
+		<!-- shared _user_info.html included into home.html End -->
     </div>
 </body>
 </html>

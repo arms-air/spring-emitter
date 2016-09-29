@@ -13,7 +13,7 @@
 		    <aside class="col-xs-4">
 		        <section>
 		            <h1>
-		                <img src="${user.getGravatarURL()}" th:alt="${user.name}" class="gravatar"/>
+		                <img th:src="${userImage}" th:alt="${user.name}" class="gravatar"/>
 		                <span th:text="${user.name}">AAA</span>
 		            </h1>
 		        </section>
